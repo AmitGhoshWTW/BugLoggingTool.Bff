@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 
 waitOn(
   {
-    resources: ["http://localhost:5173"],
+    resources: ["http://localhost:5174"],
     delay: 200,
     interval: 300,
     timeout: 60000

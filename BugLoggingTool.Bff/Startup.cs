@@ -45,6 +45,14 @@ namespace BugLoggingTool.Bff
                 Console.WriteLine("Running in Development mode. Start Vite manually with: npm run dev");
             }
 #endif
+
+#if DEBUG
+            if (Environment.IsDevelopment() &&
+                System.Environment.GetEnvironmentVariable("BLT_USE_VITE_HMR") == "true")
+            {
+                StartViteDevServer(Path.Join(Environment.ContentRootPath, "FrontEnd"));
+            }
+#endif
             // // Forward headers from Azure App Gateway
             // services.Configure<ForwardedHeadersOptions>(options =>
             // {
@@ -101,7 +109,7 @@ namespace BugLoggingTool.Bff
             services.AddCors(options =>
             {
                 options.AddPolicy("ViteDevPolicy", policy =>
-                    policy.WithOrigins("http://localhost:5173", "http://localhost:4173")
+                    policy.WithOrigins("http://localhost:5174", "http://localhost:4173")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
             });

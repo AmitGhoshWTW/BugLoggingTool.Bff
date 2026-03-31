@@ -127,7 +127,7 @@ function AppContent() {
                             >
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                             </svg>
-                            Bug Logging Tool
+                            WTW Bug Logging Tool
                         </h2>
                         <span style={styles.version}>v{APP_VERSION} {window.electronAPI ? '🖥️ Desktop' : '🌐 Web'}</span>
                     </div>

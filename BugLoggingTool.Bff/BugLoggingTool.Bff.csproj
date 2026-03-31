@@ -90,4 +90,23 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- Runs vite build automatically on every F5 in Debug config -->
+	<!-- Release publish uses build-bff.ps1 instead — no double build -->
+	<Target Name="ViteDebugBuild" BeforeTargets="Build"
+			Condition="'$(Configuration)' == 'Debug'"
+			DependsOnTargets="EnsureNpmPackagesUpToDate">
+		<PropertyGroup>
+			<ViteOutDir>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\wwwroot'))</ViteOutDir>
+		</PropertyGroup>
+		<Message Importance="high" Text="[BLT] Building React PWA into wwwroot..." />
+		<Exec Command="node scripts/generate-version.cjs --no-bump"
+			  StdOutEncoding="UTF-8" WorkingDirectory="$(FrontEndDir)"
+			  ContinueOnError="true" />
+		<Exec Command="npx vite build"
+			  StdOutEncoding="UTF-8" WorkingDirectory="$(FrontEndDir)"
+			  EnvironmentVariables="VITE_OUT_DIR=$(ViteOutDir);NODE_ENV=production"
+			  ContinueOnError="true" />
+		<Message Importance="high" Text="[BLT] React build complete" />
+	</Target>
+
 </Project>

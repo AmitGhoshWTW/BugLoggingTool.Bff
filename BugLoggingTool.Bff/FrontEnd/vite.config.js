@@ -103,8 +103,19 @@ export default defineConfig({
   },
 
   publicDir: 'public',
+  // server: {
+  //   port: 5174,
+  //   strictPort: true
+  // }
   server: {
-    port: 5173,
-    strictPort: true
+    port: 5174,
+    strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'https://localhost:5001',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 });
