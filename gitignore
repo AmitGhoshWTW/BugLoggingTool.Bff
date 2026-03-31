@@ -1,0 +1,37 @@
+# ── .NET ─────────────────────────────────────────────────────────────────────
+bin/
+obj/
+publish/
+*.user
+*.suo
+.vs/
+*.DotSettings.user
+TestResults/
+logs/
+
+# ── React / Node ──────────────────────────────────────────────────────────────
+BugLoggingTool.Bff/FrontEnd/node_modules/
+BugLoggingTool.Bff/FrontEnd/dist/
+BugLoggingTool.Bff/FrontEnd/.env.local
+BugLoggingTool.Bff/FrontEnd/.env.development.local
+BugLoggingTool.Bff/FrontEnd/.env.production.local
+BugLoggingTool.Bff/FrontEnd/.env.test.local
+
+# ── wwwroot (built by build-bff.ps1 / ViteDebugBuild target) ─────────────────
+BugLoggingTool.Bff/wwwroot/*
+!BugLoggingTool.Bff/wwwroot/.gitkeep
+
+# ── Secrets (never commit) ────────────────────────────────────────────────────
+**/secrets.json
+**/appsettings.Production.json
+**/appsettings.Development.local.json
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+*.swp
+*.swo

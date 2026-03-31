@@ -1,0 +1,299 @@
+/* -----------------------------------------------------
+   Global Theme
+----------------------------------------------------- */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --border: #d8dde3;
+  --text: #2c3e50;
+  --muted: #6c7a89;
+  --primary: #0078d7;
+  --primary-hover: #005fa3;
+  --radius: 10px;
+  --shadow: 0 3px 12px rgba(0,0,0,0.08);
+  --danger: #d7263d;
+  --success: #2ecc71;
+}
+
+body {
+  background: var(--bg);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+}
+
+/* -----------------------------------------------------
+   Container + Layout
+----------------------------------------------------- */
+.container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 20px;
+}
+
+h2, h3 {
+  margin-top: 0;
+  font-weight: 600;
+  color: var(--text);
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* -----------------------------------------------------
+   Forms
+----------------------------------------------------- */
+form {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.field {
+  margin-bottom: 15px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: #fff;
+  color: var(--text);
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.badge {
+  background: var(--bg);
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  margin-left: auto;
+}
+
+/* -----------------------------------------------------
+   Buttons
+----------------------------------------------------- */
+button {
+  padding: 10px 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: var(--primary-hover);
+}
+
+button:disabled {
+  background: #a5a5a5;
+  cursor: not-allowed;
+}
+
+/* Small button */
+button.small {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* Danger button */
+button.danger {
+  background: var(--danger);
+}
+button.danger:hover {
+  background: #b71d2f;
+}
+
+/* -----------------------------------------------------
+   Queue Items
+----------------------------------------------------- */
+.queue-item {
+  background: var(--surface);
+  padding: 15px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--primary);
+  margin-bottom: 15px;
+}
+
+.queue-item p {
+  margin: 8px 0;
+  color: var(--muted);
+}
+
+/* -----------------------------------------------------
+   Preview Images
+----------------------------------------------------- */
+.img-preview {
+  width: 260px;
+  border-radius: var(--radius);
+  margin-top: 10px;
+  box-shadow: var(--shadow);
+}
+
+/* -----------------------------------------------------
+   Dashboard Boxes
+----------------------------------------------------- */
+.dashboard-box {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.dashboard-metric {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+/* -----------------------------------------------------
+   Flex / Utility classes
+----------------------------------------------------- */
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+/* -----------------------------------------------------
+   Status indicator (ONLINE / OFFLINE)
+----------------------------------------------------- */
+.status-pill {
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+}
+.status-online {
+  background: var(--success);
+}
+.status-offline {
+  background: gray;
+}
+
+.grid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.grid-table th, .grid-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
+
+.grid-table th {
+  background: #f0f0f0;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.status-online {
+  background: #c4f2c4;
+  color: #065d06;
+}
+.status-offline {
+  background: #f8d0d0;
+  color: #8b0000;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5000;
+  cursor: zoom-out;
+}
+
+.modal-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  border: 2px solid white;
+  cursor: default;
+}
+
+/* Hover preview - subtle scale + shadow */
+.thumb-hover {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.thumb-hover:hover {
+  transform: scale(1.9);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+  z-index: 40;
+}
+
+/* Modal (reuse earlier classes but extend) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 8000;
+}
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 14px;
+  width: 90%;
+  max-width: 1100px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+/* make canvas look nice */
+.modal-content canvas {
+  background: #000;
+}
+
+/* grid table style adjustments */
+.grid-table td img { display: block; }
+
+/* make buttons slightly smaller in modal */
+.modal-content button { padding: 8px 10px; }
+.capture-thumb:hover .delete-x {
+  opacity: 1;
+}
+
+
+
+

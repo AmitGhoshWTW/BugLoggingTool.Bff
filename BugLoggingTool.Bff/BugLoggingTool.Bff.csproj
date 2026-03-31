@@ -1,0 +1,93 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>BugLoggingTool.Bff</RootNamespace>
+		<UserSecretsId>blt-bff-secrets</UserSecretsId>
+		<!-- BLT serves plain static files from wwwroot via UseFileServer().
+         Static Web Assets pipeline is not needed and causes publish failures
+         when Vite regenerates content-hashed filenames between builds. -->
+		<StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+		<EnableCompressionInDevelopment>false</EnableCompressionInDevelopment>
+		<!-- Framework-dependent deployment — .NET runtime must be installed on the host -->
+		<!-- This keeps publish output clean (just app DLLs + wwwroot) like the original template -->
+		<SelfContained>false</SelfContained>
+		<PublishSingleFile>false</PublishSingleFile>
+	</PropertyGroup>
+
+	<!-- FrontEnd source directory (Vite + React) -->
+	<PropertyGroup>
+		<FrontEndDir>FrontEnd</FrontEndDir>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(FrontEndDir)\node_modules\**</DefaultItemExcludes>
+		<NpmInstallTag>$(FrontEndDir)\node_modules\npminstall.tag</NpmInstallTag>
+	</PropertyGroup>
+
+	<!-- NuGet packages (kept from template) -->
+	<ItemGroup>
+		<PackageReference Include="Dapper"                                        Version="2.1.72" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore"      Version="3.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies"   Version="2.3.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.5" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
+		<PackageReference Include="Serilog"                                       Version="4.3.1" />
+		<PackageReference Include="Serilog.AspNetCore"                            Version="10.0.0" />
+		<PackageReference Include="Serilog.Formatting.Compact"                    Version="3.0.0" />
+		<PackageReference Include="Serilog.Sinks.ApplicationInsights"             Version="5.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console"                         Version="6.1.1" />
+		<PackageReference Include="Serilog.Sinks.File"                            Version="7.0.0" />
+		<PackageReference Include="SumoLogic.Logging.Serilog"                    Version="1.1.0" />
+		<PackageReference Include="System.Data.SqlClient"                         Version="4.9.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Don't publish FrontEnd source, but show in IDE -->
+		<Content Remove="$(FrontEndDir)\**" />
+		<None Include="$(FrontEndDir)\*.json" />
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<!-- ── npm install targets (kept from template) ─────────────────────────── -->
+	<Target Name="NpmInstall">
+		<Message Importance="high" Text="Restoring npm dependencies..." />
+		<Exec Command="npm install" ContinueOnError="true" StdOutEncoding="UTF-8" WorkingDirectory="$(FrontEndDir)">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="npm install failed." />
+		<Touch AlwaysCreate="True" Files="$(NpmInstallTag)" />
+	</Target>
+
+	<Target Name="CreatePackageLock" Inputs="$(FrontEndDir)\package.json"
+			Outputs="$(FrontEndDir)\package-lock.json"
+			Condition="!Exists('$(FrontEndDir)\package-lock.json')">
+		<CallTarget Targets="NpmInstall" />
+	</Target>
+
+	<Target Name="ConditionalNpmInstall" Inputs="$(FrontEndDir)\package-lock.json" Outputs="$(NpmInstallTag)">
+		<CallTarget Targets="NpmInstall" />
+	</Target>
+
+	<Target Name="CleanNpmInstall" AfterTargets="Clean" Condition="Exists('$(NpmInstallTag)')">
+		<Delete Files="$(NpmInstallTag)" />
+	</Target>
+
+	<Target Name="EnsureNpmPackagesUpToDate" BeforeTargets="Build"
+			DependsOnTargets="CreatePackageLock; ConditionalNpmInstall" />
+
+	<!-- ── wwwroot publish inclusion ────────────────────────────────────────── -->
+	<!-- Vite build is run by build-bff.ps1 BEFORE dotnet publish.             -->
+	<!-- This target simply ensures whatever is in wwwroot/ gets published.    -->
+	<!-- Do NOT run vite here — double-building generates mismatched hashes.   -->
+	<Target Name="IncludeWwwroot" BeforeTargets="ComputeFilesToPublish">
+		<ItemGroup>
+			<DistFiles Include="wwwroot\**" Exclude="wwwroot\.gitkeep" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
+</Project>

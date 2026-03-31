@@ -1,0 +1,84 @@
+{
+  "name": "blt-app",
+  "version": "1.0.44",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "electron-start": "electron .",
+    "dev:electron": "concurrently -k -s first \"npm run dev\" \"npm run electron:wait\"",
+    "electron:wait": "node scripts/wait-and-start.cjs",
+    "electron": "electron .",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:win": "npm run build && electron-builder --win",
+    "electron:build:mac": "npm run build && electron-builder --mac",
+    "electron:build:linux": "npm run build && electron-builder --linux",
+    "preview": "vite preview",
+    "electron-build": "electron-builder",
+    "serve": "npm run build && serve -s dist -l 3000",
+    "serve:only": "serve -s dist -l 3000",
+    "build": "node scripts/generate-version.cjs && vite build",
+    "build:minor": "node scripts/generate-version.cjs --minor && vite build",
+    "build:major": "node scripts/generate-version.cjs --major && vite build",
+    "build:force": "node scripts/generate-version.cjs --force-reload && vite build"
+  },
+  "build": {
+    "appId": "com.company.blt",
+    "productName": "BLT - Bug Logging Tool",
+    "directories": {
+      "output": "electron-dist"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "backend/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "forceCodeSigning": false,
+      "signAndEditExecutable": false,
+      "verifyUpdateCodeSignature": false
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "public/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "public/icon.png",
+      "category": "Utility"
+    }
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^4.27.0",
+    "@azure/msal-react": "^3.0.23",
+    "axios": "^1.13.2",
+    "better-sqlite3": "^12.8.0",
+    "dexie": "^4.3.0",
+    "events": "^3.3.0",
+    "idb": "^7.1.1",
+    "pouchdb-browser": "^9.0.0",
+    "pouchdb-find": "^9.0.0",
+    "pouchdb-node": "^9.0.0",
+    "pouchdb-upsert": "^2.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "screenshot-desktop": "^1.14.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^8.2.2",
+    "electron": "^28.3.3",
+    "electron-builder": "^26.0.12",
+    "serve": "^14.2.5",
+    "vite": "^5.0.0",
+    "wait-on": "^7.2.0"
+  },
+  "main": "electron/main.cjs"
+}
